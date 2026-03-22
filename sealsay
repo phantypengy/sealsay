@@ -8,7 +8,7 @@ if sys.platform == "darwin":
 elif sys.platform == "linux":
     filePath = "/usr/share/sealsay/seals"
 
-def printSeal(usrInput, sealInput):
+def printSeal(usrInput, sealInput, filePath):
     match sealInput.lower():
         case "-s":
             f = open(f"{filePath}/basicseal.txt", "r")
