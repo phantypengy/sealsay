@@ -75,6 +75,7 @@ sealsay -s hello world
 ```
 
 There are currently 3 different seals that can be used via "-":
+
 -s : basic seal
 
 -t : tired seal
