@@ -1,6 +1,6 @@
 # Maintainer: Dominik Chwirot dchwirot01@gmail.com
 pkgname=sealsay
-pkgver=1.1.1
+pkgver=1.1.2
 pkgrel=1
 pkgdesc="CLI app that generates ASCII art of a seal saying a message"
 arch=(any)
