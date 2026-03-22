@@ -3,20 +3,25 @@
 import sys
 import textwrap
 
+if sys.platform == "darwin":
+    filePath = "/opt/homebrew/sealsay/seals"
+elif sys.platform == "linux":
+    filePath = "/usr/share/sealsay/seals"
+
 def printSeal(usrInput, sealInput):
     match sealInput.lower():
         case "-s":
-            f = open("/usr/share/sealsay/seals/basicseal.txt", "r")
+            f = open(f"{filePath}/basicseal.txt", "r")
             sealArt = f.read()
             f.close()
         
         case "-t":
-            f = open("/usr/share/sealsay/seals/tiredseal.txt", "r")
+            f = open(f"{filePath}/tiredseal.txt", "r")
             sealArt = f.read()
             f.close()
 
         case "-l":
-            f = open("/usr/share/sealsay/seals/sealion.txt", "r")
+            f = open(f"{filePath}/sealion.txt", "r")
             sealArt = f.read()
             f.close()
         
@@ -44,4 +49,5 @@ if __name__ == "__main__":
         usrInput = " ".join(sys.argv[2:])
         printSeal(usrInput, sealInput)
     else:
-        print("Invalid use! Please provide a message for the seal to say.")
+        print("Invalid use! Please use this format;" \
+        "sealsay -[selector] [message]")
