@@ -1,4 +1,4 @@
-# Maintainer: Dominik Chwirot dchwirot01@gmail.com
+#Maintainer: Dominik Chwirot dchwirot01@gmail.com
 pkgname=sealsay
 pkgver=1.1.1
 pkgrel=1
@@ -13,4 +13,6 @@ sha256sums=('eae7f28e4afd412f6e9c62f5cb98d7c797283348ce763229ee600505c6d72cf7')
 
 package() {
     install -Dm755 "$srcdir/sealsay-$pkgver/sealsay" "$pkgdir/usr/bin/sealsay"
+    mkdir -p "$pkgdir/usr/share/sealsay/seals"
+    install -Dm644 "$srcdir/sealsay-$pkgver/seals/"* "$pkgdir/usr/share/sealsay/seals/"
 }
