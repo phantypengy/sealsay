@@ -3,7 +3,28 @@
 import sys
 import textwrap
 
-def printSeal(usrInput):
+def printSeal(usrInput, sealInput):
+    match sealInput.lower():
+        case " ":
+            f = open("/usr/share/sealsay/seals/basicseal.txt", "r")
+            sealArt = f.read()
+            f.close()
+        case "-s":
+            f = open("/usr/share/sealsay/seals/basicseal.txt", "r")
+            sealArt = f.read()
+            f.close()
+        
+        case "-t":
+            f = open("/usr/share/sealsay/seals/tiredseal.txt", "r")
+            sealArt = f.read()
+            f.close()
+
+        case "-l":
+            f = open("/usr/share/sealsay/seals/sealion.txt", "r")
+            sealArt = f.read()
+            f.close()
+        
+
     lines = textwrap.wrap(usrInput, width=40)
     width = max(len(l) for l in lines)
     border = "-" * (width + 4)
@@ -13,23 +34,18 @@ def printSeal(usrInput):
     for line in lines:
         bubble += f"    <  {line}  >\n"
     bubble += f"     {border}"
+    
 
-    print(rf""" 
+    print(rf"""
      {bubble}
-       \ 
-        \                             ---\/---                           
-         \      ------                \  || /                    
-          \    .  .  /\ -----------\   \   /                                 
-           \  *     /               \  /  /                     
-            - (--)                   \/  /                       
-               \      | \               /                    
-                -------\ \-------------/                                                    
-                        \ |                                                                                                                                                                           
+{sealArt}                                                      
       """)
+
     
 if __name__ == "__main__":
     if len(sys.argv) > 1:
-        usrInput = " ".join(sys.argv[1:])
-        printSeal(usrInput)
+        sealInput = " ".join(sys.argv[1:2])
+        usrInput = " ".join(sys.argv[2:])
+        printSeal(usrInput, sealInput)
     else:
         print("Invalid use! Please provide a message for the seal to say.")
