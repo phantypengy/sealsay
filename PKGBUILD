@@ -9,7 +9,7 @@ license=('GPL-3.0-or-later')
 depends=(python)
 
 source=("$pkgname-$pkgver.tar.gz::https://github.com/phantypengy/sealsay/archive/v$pkgver.tar.gz")
-sha256sums=('e8e37fc2e3076d883d8cde1aebc63aa5fe9eec284138a153af0245fc6e526a66')
+sha256sums=('eae7f28e4afd412f6e9c62f5cb98d7c797283348ce763229ee600505c6d72cf7')
 
 package() {
     install -Dm755 "$srcdir/sealsay-$pkgver/sealsay" "$pkgdir/usr/bin/sealsay"
