@@ -51,12 +51,14 @@ $ cd sealsay
 $ chmod +x sealsay
 
 # Linux / macOS:
-$ mv sealsay /usr/local/bin/sealsay
+$ sudo mv sealsay /usr/local/bin/sealsay
 
 # Windows (MSYS2):
 $ mv sealsay /usr/bin/sealsay
 # Note that this program will only work through the MSYS2 terminal
 ```
+
+After running the mv command, it is safe to delete the remains of the repo
 
 ## Usage
 
