@@ -21,20 +21,35 @@ A seal that lives in your terminal. Inspired by cowsay!
 
 **Requires Python3**
 
+Install python from the [official website](https://www.python.org/downloads/)
+
+OR
+
+```bash
+# apt (Debian / Ubuntu)
+$ sudo apt install python
+
+# pacman (Arch)
+$ pacman -S python3
+
+# Homebrew (Linux / MacOS)
+$ brew install python
+```
+
 ### Manual
 
 1: Clone the repo:
 
 ```bash
-git clone https://github.come/phantypengy/sealsay
-cd sealsay
+$ git clone https://github.com/phantypengy/sealsay
+$ cd sealsay
 ```
 
 2: Make script executable & add it to PATH:
 
 ```bash
-chmod +x sealsay
-mv sealsay /usr/local/bin/sealsay
+$ chmod +x sealsay
+$ mv sealsay /usr/local/bin/sealsay
 ```
 
 ## Usage
@@ -42,7 +57,7 @@ mv sealsay /usr/local/bin/sealsay
 Same format as cowsay:
 
 ```bash
-sealsay seals are the best!
+$ sealsay seals are the best!
 
 
      -----------------------
