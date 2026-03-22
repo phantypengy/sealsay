@@ -68,22 +68,15 @@ After running the mv command, it is safe to delete the remains of the repo
 
 ## Usage
 
-Same format as cowsay:
+Same format as cowsay, for example:
 
 ```bash
-$ sealsay seals are the best!
-
-
-     -----------------------
-    <  seals are the best!  >
-     -----------------------
-       \
-        \                             ---\/---
-         \      ------                \  || /
-          \    .  .  /\ -----------\   \   /
-           \  *     /               \  /  /
-            - (--)                   \/  /
-               \      | \               /
-                -------\ \-------------/
-                        \ |
+sealsay -s hello world
 ```
+
+There are currently 3 different seals that can be used via "-":
+-s : basic seal
+-t : tired seal
+-l : sea lion
+
+Seals are stored in /usr/share/sealsay/seals/ as .txt files.
