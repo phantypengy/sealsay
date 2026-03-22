@@ -75,8 +75,10 @@ sealsay -s hello world
 ```
 
 There are currently 3 different seals that can be used via "-":
-> -s : basic seal
-> -t : tired seal
-> -l : sea lion
+-s : basic seal
+
+-t : tired seal
+
+-l : sea lion
 
 Seals are stored in /usr/share/sealsay/seals/ as .txt files.
