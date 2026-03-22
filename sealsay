@@ -5,10 +5,6 @@ import textwrap
 
 def printSeal(usrInput, sealInput):
     match sealInput.lower():
-        case " ":
-            f = open("/usr/share/sealsay/seals/basicseal.txt", "r")
-            sealArt = f.read()
-            f.close()
         case "-s":
             f = open("/usr/share/sealsay/seals/basicseal.txt", "r")
             sealArt = f.read()
