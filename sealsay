@@ -51,3 +51,5 @@ if __name__ == "__main__":
     else:
         print("Invalid use! Please use this format;" \
         "sealsay -[selector] [message]")
+
+# program made by phantypengy!!
