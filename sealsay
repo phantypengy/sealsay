@@ -2,16 +2,27 @@
 
 import sys
 import textwrap
+import platform
+
+filePath = "seals/"
+if (platform.system() == "Linux"):
+    filePath = "/usr/share/seals/"
+elif (platform.system() == "Darwin"):
+    filePath = "/usr/local/share/seals/"
+# detects which os for file path, because macOS doesn't like things being installed
+# to /usr/share/
 
 def main():
     if len(sys.argv) > 1:
         sealVar = sys.argv[1]
         usrInput = "".join(sys.argv[2:])
         sealArt = selectSeal(sealVar)
-        if (sealArt == 1):
+        if sealArt == 2:
+            print("Usage: sealsay [-modifier] [message]\nNOTE: Message MUST be preceded by a modifier\nMODIFIERS:\nSeal variants:\n-s, -o, -t\n\nOther modifiers:\n-h")
+        elif sealArt == 0:
+            print("Error: no sealfile attached to modifier")
+        elif sealArt:
             printSeal(usrInput, sealArt)
-        elif (sealArt == 2):
-            print("")
         else:
             print("Error: Incorrect usage. See \"sealsay -h\" for help.")
 
@@ -28,28 +39,27 @@ def printSeal(usrInput, sealArt):
         bubble += f"    <  {line}  >\n"
     bubble += f"     {border}"
 
-    print(rf"""{bubble}
+    print(rf"""
+     {bubble}
 {sealArt}""")
 
 def selectSeal(sealVar):
     x = 0
     if (sealVar == "-s"):
-        with open("/usr/share/seals/basicseal.txt") as f:
+        with open(f"{filePath}basicseal.txt") as f:
             x = f.read()
             return x
     elif (sealVar == "-o"):
-        with open("/usr/share/seals/oldseal.txt") as f:
+        with open(f"{filePath}oldseal.txt") as f:
             x = f.read()
             return x
     elif (sealVar == "-t"):
-        with open("/usr/share/seals/triple.txt") as f:
+        with open(f"{filePath}triple.txt") as f:
             x = f.read()
             return x
     elif (sealVar == "-h"):
-        print("Usage: sealsay [-modifier] [message]\nNOTE: Message MUST be preceded by a modifier\nMODIFIERS:\nSeal variants:\n-s, -o, -t\n\nOther modifiers:\n-h")
         return 2
     else:
-        print("Error: no sealfile attached to modifier")
         return 0
 
 if __name__ == "__main__": main()
