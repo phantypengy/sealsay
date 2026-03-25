@@ -3,33 +3,53 @@
 import sys
 import textwrap
 
-def printSeal(usrInput):
+def main():
+    if len(sys.argv) > 1:
+        sealVar = sys.argv[1]
+        usrInput = "".join(sys.argv[2:])
+        sealArt = selectSeal(sealVar)
+        if (sealArt == 1):
+            printSeal(usrInput, sealArt)
+        elif (sealArt == 2):
+            print("")
+        else:
+            print("Error: Incorrect usage. See \"sealsay -h\" for help.")
+
+def printSeal(usrInput, sealArt):
+    usrInput = usrInput or ""
     lines = textwrap.wrap(usrInput, width=40)
+    if not lines:
+        lines = [""]
     width = max(len(l) for l in lines)
     border = "-" * (width + 4)
-    
-    
     bubble = f"{border}\n"
+    
     for line in lines:
         bubble += f"    <  {line}  >\n"
     bubble += f"     {border}"
 
-    print(rf""" 
-     {bubble}
-       \ 
-        \                             ---\/---                           
-         \      ------                \  || /                    
-          \    .  .  /\ -----------\   \   /                                 
-           \  *     /               \  /  /                     
-            - (--)                   \/  /                       
-               \      | \               /                    
-                -------\ \-------------/                                                    
-                        \ |                                                                                                                                                                           
-      """)
-    
-if __name__ == "__main__":
-    if len(sys.argv) > 1:
-        usrInput = " ".join(sys.argv[1:])
-        printSeal(usrInput)
+    print(rf"""{bubble}
+{sealArt}""")
+
+def selectSeal(sealVar):
+    x = 0
+    if (sealVar == "-s"):
+        with open("/usr/share/seals/basicseal.txt") as f:
+            x = f.read()
+            return x
+    elif (sealVar == "-o"):
+        with open("/usr/share/seals/oldseal.txt") as f:
+            x = f.read()
+            return x
+    elif (sealVar == "-t"):
+        with open("/usr/share/seals/triple.txt") as f:
+            x = f.read()
+            return x
+    elif (sealVar == "-h"):
+        print("Usage: sealsay [-modifier] [message]\nNOTE: Message MUST be preceded by a modifier\nMODIFIERS:\nSeal variants:\n-s, -o, -t\n\nOther modifiers:\n-h")
+        return 2
     else:
-        print("Invalid use! Please provide a message for the seal to say.")
+        print("Error: no sealfile attached to modifier")
+        return 0
+
+if __name__ == "__main__": main()
