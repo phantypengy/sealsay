@@ -95,3 +95,19 @@ $ sealsay -s seals are the best!
                 -------\ \-------------/
                         \ |
 ```
+
+## Possible modifiers:
+
+### Seal variants:
+
+-s: original seal
+
+-t: triple seal
+
+-o: basic seal
+
+*-t and -o were taken from ASCII.co.uk* 
+
+### Other commands:
+
+-h: help (shows usage)
