@@ -57,6 +57,9 @@ def build_parser():
     p.add_argument("-r", "--random", action="store_true", help="pick a random seal to display your message")
     p.add_argument("-n", "--no-wrap", action="store_true", help="disable text wrapping")
     
+    appearance = p.add_argument_group("appearance")
+    appearance.add_argument("-B", "--bold", action="store_true", help="makes bubble text bolded")
+    
     seals = p.add_argument_group("seals")
     seal_choice = seals.add_mutually_exclusive_group(required=False)
     for flag in sorted(SEALS):
@@ -86,7 +89,7 @@ def main():
         parser.error(f'please provide something so we can make seal instead of "{args.seal}"')
         sys.exit(EXIT_INVALID_SEAL)
         
-    printSeal(message=message, sealArt=sealArt, no_wrap=args.no_wrap)
+    printSeal(message=message, sealArt=sealArt, no_wrap=args.no_wrap, bold=args.bold)
     
 def read_stdin():
     try: 
@@ -106,7 +109,7 @@ def list_seals():
     for flag in sorted(SEALS):
         print(f"{"":<{3}}{flag} {Path(SEALS[flag]).stem}")
 
-def printSeal(message, sealArt, no_wrap=False):
+def printSeal(message, sealArt, no_wrap=False, bold=False):
     message = message or ""
     
     lines = []
@@ -114,7 +117,7 @@ def printSeal(message, sealArt, no_wrap=False):
         if no_wrap:
             lines.extend(paragraph)
         else:
-            lines.extend(textwrap.wrap(paragraph, width=40) or [""])
+            lines.extend(textwrap.wrap(paragraph, width=40) or [""]) 
     
     width = max(len(l) for l in lines)
     
@@ -152,8 +155,13 @@ def printSeal(message, sealArt, no_wrap=False):
         #     body_lines.append(f"{left} {line.ljust(width)} {right}")
         
         body = "\n".join(body_lines)
+        
+    output = f"{top}\n{body}\n{bottom}\n{sealArt}"
+    if bold:
+        print(f"bold is {bold}", file=sys.stderr)
+        output = f"\x1b[1m{output}\x1b[0m"
 
-    print(f"{top}\n{body}\n{bottom}\n{sealArt}")
+    print(output)
 
 
 def selectSeal(sealVar):
