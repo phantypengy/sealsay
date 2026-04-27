@@ -107,8 +107,6 @@ $ sealsay -s seals are the best!
 
 -o: old seal
 
--t: temp seal
-
 -t: triple seal
 
 <!-- SEALS:END -->
