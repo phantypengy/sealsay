@@ -81,17 +81,6 @@ def read_stdin():
         sys.exit(EXIT_INTERRUPTED)
     except (OSError, UnicodeDecodeError) as e:
         print(f"Error when reading from stdin: {e}", file=sys.stderr)
-      
-# ts kinda ugly      
-def help_msg():
-    flags = ", ".join(sorted(SEALS.keys()))
-    return f"""\
-USAGE: sealsay [-modifier] [message]
-NOTE: Message must be preceded by a modifier
-
-MODIFIERS:
-Seal variants: {flags}
-Help:          -h"""
 
 def printSeal(usrInput, sealArt):
     usrInput = usrInput or ""
