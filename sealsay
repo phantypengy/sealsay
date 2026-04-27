@@ -46,7 +46,11 @@ def build_parser():
     p = argparse.ArgumentParser(
         prog="sealsay",
         description="CLI app that generates ASCII art of a seal saying a message",
-        epilog="e.g usage: sealsay -s 'Hello, world!'"
+        formatter_class=argparse.RawDescriptionHelpFormatter, # turns off text wrapping in epilog
+        epilog=("e.g usage:\n"
+                "   sealsay -s 'Hello, world!' # uses the 'basic' seal\n"
+                "   sealsay -r Hi              # chooses a random seal") # ^ same length text ugh so hot and sexy
+
     )
     p.add_argument("message", nargs="*", help="text for the seal to say")
     p.add_argument("-r", "--random", action="store_true", help="pick a random seal to display your message")
@@ -62,7 +66,8 @@ def build_parser():
     return p
 
 def main():
-    args = build_parser().parse_args()
+    parser = build_parser()
+    args = parser.parse_args()
     
     if args.random:
         args.seal = random.choice(list(SEALS.keys()))
@@ -70,10 +75,9 @@ def main():
     message = " ".join(args.message)
     if not message and not sys.stdin.isatty():
         message = read_stdin()
-    
-    sealArt = selectSeal(args.seal)
-    if sealArt is None:
-        print(f'Error: unknown opt "{args.seal}", use sealsay -h for usage.', file=sys.stderr)
+            
+    if (sealArt := selectSeal(args.seal)) is None:
+        parser.error(f'please provide something so we can make seal instead of "{args.seal}"')
         sys.exit(EXIT_INVALID_SEAL)
         
     printSeal(message, sealArt)
