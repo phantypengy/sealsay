@@ -13,6 +13,9 @@ sealsay - A CLI program inspired by cowsay
 [\m[green]-l\m[]]
 [\m[green]-r\m[]]
 [\m[green]-n\m[]]
+[\m[green]-w \fIint\fP\m[]]
+[\m[green]-e \fIEE\fP\m[]]
+[\m[green]-T \fITT\fP\m[]]
 [\m[green]-B\m[]]
 [\m[green]-R\m[]]
 [\m[green]-A\m[]]
@@ -41,6 +44,15 @@ pick a random seal to display your message
 .TP
 \m[green]\fB-n\fP\m[], \m[cyan]\fB--no-wrap\fP\m[]
 disable text wrapping
+.TP
+\m[green]\fB-w\fP\m[], \m[cyan]\fB--wrap\fP\m[] \fIint\fP
+wrap column after a given amount of chars (default = 40)
+.TP
+\m[green]\fB-e\fP\m[], \m[cyan]\fB--eyes\fP\m[] \fIEE\fP
+gives your seal eyes!! comma seperated for seals with multiple eyes. e.g 'aa,bb,cc'
+.TP
+\m[green]\fB-T\fP\m[], \m[cyan]\fB--tongues\fP\m[] \fITT\fP
+gives your seal a tongue!! comma seperated for seals with multiple tongues. e.g 'aa,bb,cc'
 
 .gcolor blue
 .SH APPEARANCE
@@ -55,7 +67,9 @@ makes bubble text rainbow
 \m[green]\fB-A\fP\m[], \m[cyan]\fB--aurora\fP\m[]
 makes bubble text aurora'd
 
-.TP SEALS
+.gcolor blue
+.SH SEALS
+.gcolor
 .TP
 \m[green]\fB-b\fP\m[], \m[cyan]\fB--basic\fP\m[]
 basic seal

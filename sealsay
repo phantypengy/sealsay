@@ -65,7 +65,8 @@ def build_parser():
     p.add_argument("-r", "--random", action="store_true", help="pick a random seal to display your message")
     p.add_argument("-n", "--no-wrap", action="store_true", help="disable text wrapping")
     p.add_argument("-w", "--wrap", type=int, default=40, metavar="int", help="wrap column after a given amount of chars (default = 40)")
-    p.add_argument("-e", "--eyes", default=None, metavar="LR", help="gives your seal eyes!! comma seperated for seals with multiple eyes")
+    p.add_argument("-e", "--eyes", default=None, metavar="EE", help="gives your seal eyes!! comma seperated for seals with multiple eyes. e.g 'aa,bb,cc'")
+    p.add_argument("-T", "--tongues", default=None, metavar="TT", help="gives your seal a tongue!! comma seperated for seals with multiple tongues. e.g 'aa,bb,cc'")
 
     
     appearance = p.add_argument_group("appearance")
@@ -99,7 +100,7 @@ def main():
     if not message and not sys.stdin.isatty():
         message = read_stdin()
             
-    if (sealArt := selectSeal(args.seal, eyes=args.eyes)) is None:
+    if (sealArt := selectSeal(args.seal, eyes=args.eyes, tongues=args.tongues)) is None:
         parser.error(f'please provide something so we can make seal instead of "{args.seal}"')
         sys.exit(EXIT_INVALID_SEAL)
         
@@ -180,7 +181,47 @@ def _parse_seal(raw):
         else:
             break
         
-        return "".join(lines[body_start:]), defaults
+    return "".join(lines[body_start:]), defaults
+
+def _parse_braced(mark):
+    parts = []
+    regions = []
+    pos = 0
+    i = 0
+    
+    while i < len(mark):
+        if mark[i] == "{":
+            close = mark.find("}", i + 1)
+            if close < 0:
+                parts.append(mark[i])
+                pos += 1
+                i += 1
+                continue
+            region = mark[i + 1:close]
+            parts.append(region)
+            regions.append((pos, len(region)))
+            pos += len(region)
+            i = close + 1
+        else:
+            parts.append(mark[i])
+            pos += 1
+            i += 1
+
+    return "".join(parts), regions
+
+def _fill_regions(literal, regions, user_input):
+    out = []
+    last = 0
+    idx = 0
+    
+    for start, width in regions:
+        out.append(literal[last:start])
+        out.append(user_input[idx:idx + width].ljust(width))
+        idx += width
+        last = start + width
+        
+    out.append(literal[last:])
+    return "".join(out)
 
 def printSeal(message, sealArt, no_wrap=False, wrap=40, bold=False, rainbow=False, aurora=False):
     message = message or ""
@@ -215,18 +256,6 @@ def printSeal(message, sealArt, no_wrap=False, wrap=40, bold=False, rainbow=Fals
         for i, line in enumerate(lines):
             left, right = sides.get(i, ("|", "|"))
             body_lines.append(f"{left} {line.ljust(width)} {right}")
-        
-        # old way, im not sure if above covers all edge cases, so ill leave it here for now
-        # for i, line in enumerate(lines):
-        #     if i == 0:
-        #         left, right = "/", "\\"
-        #     elif i == len(lines) - 1:
-        #         left, right = "\\", "/"
-        #     else:
-        #         left, right = "|", "|"
-            
-        #     body_lines.append(f"{left} {line.ljust(width)} {right}")
-        
         body = "\n".join(body_lines)
         
     output = f"{top}\n{body}\n{bottom}\n{sealArt}"
@@ -241,7 +270,7 @@ def printSeal(message, sealArt, no_wrap=False, wrap=40, bold=False, rainbow=Fals
     print(output)
 
 
-def selectSeal(sealVar, eyes):
+def selectSeal(sealVar, eyes, tongues):
     if sealVar not in SEALS:
         return None
     
@@ -258,16 +287,27 @@ def selectSeal(sealVar, eyes):
     eye_pairs = [p.strip() for p in default.get("eyes", "").split(",") if p.strip()]
     
     if eyes is not None and eye_pairs:
-        user_eyes = [e.strip()[:2].ljust(2) for e in eyes.split(",")]
+        user_eyes = [e.strip() for e in eyes.split(",")]
         
         if len(user_eyes) == 1:
             user_eyes = user_eyes * len(eye_pairs) # if only one eye pair is provided, apply to all eyes in the file
         
         for original_pair, new_eye in zip(eye_pairs, user_eyes):
-            spacing = original_pair[1:-1]
-            new_pair = f"{new_eye[0]}{spacing}{new_eye[1]}"
-            art = art.replace(original_pair, new_pair, 1)
-    
+            literal, regions = _parse_braced(original_pair)
+            art = art.replace(literal, _fill_regions(literal, regions, new_eye), 1)
+
+    tongue_marks = [t.strip() for t in default.get("tongues", "").split(",") if t.strip()]
+
+    if tongues is not None and tongue_marks:
+        user_tongues = [t.strip() for t in tongues.split(",")]
+
+        if len(user_tongues) == 1:
+            user_tongues = user_tongues * len(tongue_marks)
+
+        for original_mark, new_tongue in zip(tongue_marks, user_tongues):
+            literal, regions = _parse_braced(original_mark)
+            art = art.replace(literal, _fill_regions(literal, regions, new_tongue), 1)
+
     return art
 
 if __name__ == "__main__": main()
