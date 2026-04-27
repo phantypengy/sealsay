@@ -1,5 +1,7 @@
 # sealsay
 
+![AUR version](https://img.shields.io/aur/version/sealsay)
+
 ```bash
      ------
     <  yo  >
@@ -106,8 +108,18 @@ $ sealsay -s seals are the best!
 
 -o: basic seal
 
-*-t and -o were taken from ASCII.co.uk* 
+_-t and -o were taken from ASCII.co.uk_
 
 ### Other commands:
 
 -h: help (shows usage)
+
+## Star History
+
+<a href="https://www.star-history.com/?repos=phantypengy%2Fsealsay&type=date&legend=top-left">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=phantypengy/sealsay&type=date&theme=dark&legend=top-left" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=phantypengy/sealsay&type=date&legend=top-left" />
+   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=phantypengy/sealsay&type=date&legend=top-left" />
+ </picture>
+</a>
