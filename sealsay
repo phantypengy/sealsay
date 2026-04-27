@@ -65,6 +65,8 @@ def build_parser():
     p.add_argument("-r", "--random", action="store_true", help="pick a random seal to display your message")
     p.add_argument("-n", "--no-wrap", action="store_true", help="disable text wrapping")
     p.add_argument("-w", "--wrap", type=int, default=40, metavar="int", help="wrap column after a given amount of chars (default = 40)")
+    p.add_argument("-e", "--eyes", default=None, metavar="LR", help="gives your seal eyes!! comma seperated for seals with multiple eyes")
+
     
     appearance = p.add_argument_group("appearance")
     appearance.add_argument("-B", "--bold", action="store_true", help="makes bubble text bolded")
@@ -97,7 +99,7 @@ def main():
     if not message and not sys.stdin.isatty():
         message = read_stdin()
             
-    if (sealArt := selectSeal(args.seal)) is None:
+    if (sealArt := selectSeal(args.seal, eyes=args.eyes)) is None:
         parser.error(f'please provide something so we can make seal instead of "{args.seal}"')
         sys.exit(EXIT_INVALID_SEAL)
         
@@ -163,6 +165,23 @@ def aurora_print(text, bold=False, start=0):
         bold=bold
     )
 
+# strips '# eye: value' and returns (sealArt, defaults)
+def _parse_seal(raw):
+    defaults = {}
+    lines = raw.splitlines(keepends=True)
+    body_start = 0
+    
+    for i, line in enumerate(lines):
+        stripped = line.lstrip()
+        if stripped.startswith("#") and ":" in stripped:
+            key, _, val = stripped[1:].partition(":")
+            defaults[key.strip()] = val.strip()
+            body_start = i + 1
+        else:
+            break
+        
+        return "".join(lines[body_start:]), defaults
+
 def printSeal(message, sealArt, no_wrap=False, wrap=40, bold=False, rainbow=False, aurora=False):
     message = message or ""
     
@@ -222,7 +241,7 @@ def printSeal(message, sealArt, no_wrap=False, wrap=40, bold=False, rainbow=Fals
     print(output)
 
 
-def selectSeal(sealVar):
+def selectSeal(sealVar, eyes):
     if sealVar not in SEALS:
         return None
     
@@ -230,9 +249,25 @@ def selectSeal(sealVar):
     
     try:
         with open(path, encoding="utf-8") as f:
-            return f.read()
+            raw = f.read()
     except FileNotFoundError:
         print(f"Error: seal file not found: {path}", file=sys.stderr)
         sys.exit(EXIT_INVALID_SEAL)
+    
+    art, default = _parse_seal(raw)
+    eye_pairs = [p.strip() for p in default.get("eyes", "").split(",") if p.strip()]
+    
+    if eyes is not None and eye_pairs:
+        user_eyes = [e.strip()[:2].ljust(2) for e in eyes.split(",")]
+        
+        if len(user_eyes) == 1:
+            user_eyes = user_eyes * len(eye_pairs) # if only one eye pair is provided, apply to all eyes in the file
+        
+        for original_pair, new_eye in zip(eye_pairs, user_eyes):
+            spacing = original_pair[1:-1]
+            new_pair = f"{new_eye[0]}{spacing}{new_eye[1]}"
+            art = art.replace(original_pair, new_pair, 1)
+    
+    return art
 
 if __name__ == "__main__": main()
