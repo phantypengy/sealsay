@@ -56,7 +56,7 @@ def build_parser():
         name = Path(SEALS[flag]).stem
         seal_choice.add_argument(flag, f"--{name}", dest="seal", action="store_const", const=flag, help=f"{name} seal")
     
-    seal_choice.add_argument("-s", "--say", dest="seal", action="store_const", const="-o", help="Says something with the og seal")
+    seal_choice.add_argument("-s", "--say", dest="seal", action="store_const", const="-b", help="Says something with the og seal")
     
     return p
 
