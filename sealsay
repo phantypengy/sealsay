@@ -26,22 +26,52 @@ def main():
         else:
             print("Error: Incorrect usage. See \"sealsay -h\" for help.")
 
-def printSeal(usrInput, sealArt):
+def printSeal(usrInput, sealArt):    
     usrInput = usrInput or ""
-    lines = textwrap.wrap(usrInput, width=40)
-    if not lines:
-        lines = [""]
-    width = max(len(l) for l in lines)
-    border = "-" * (width + 4)
-    bubble = f"{border}\n"
     
-    for line in lines:
-        bubble += f"    <  {line}  >\n"
-    bubble += f"     {border}"
+    lines = []
+    for paragraph in usrInput.split("\n"):
+        lines.extend(textwrap.wrap(paragraph, width=40) or [""])
+    
+    width = max(len(l) for l in lines)
+    
+    # helper func for border deduplication
+    def border(char):
+        leader      = " "
+        inner_width = (width + 2)
+        
+        return leader + char * inner_width
+    
+    top     = border("_")
+    bottom  = border("-")
+    
+    if len(lines) == 1:
+        body = f"< {lines[0].ljust(width)} >"
+    else:
+        body_lines = []
+        
+        last = len(lines) - 1
+        sides = {0: ("/", "\\"), last: ("\\", "/")}
+        
+        for i, line in enumerate(lines):
+            left, right = sides.get(i, ("|", "|"))
+            body_lines.append(f"{left} {line.ljust(width)} {right}")
+        
+        # old way, im not sure if above covers all edge cases, so ill leave it here for now
+        # for i, line in enumerate(lines):
+        #     if i == 0:
+        #         left, right = "/", "\\"
+        #     elif i == len(lines) - 1:
+        #         left, right = "\\", "/"
+        #     else:
+        #         left, right = "|", "|"
+            
+        #     body_lines.append(f"{left} {line.ljust(width)} {right}")
+        
+        body = "\n".join(body_lines)
 
-    print(rf"""
-     {bubble}
-{sealArt}""")
+    print(f"{top}\n{body}\n{bottom}\n{sealArt}")
+
 
 def selectSeal(sealVar):
     x = 0
