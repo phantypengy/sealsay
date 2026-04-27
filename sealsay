@@ -3,30 +3,62 @@
 import sys
 import textwrap
 import platform
+from pathlib import Path
 
 filePath = "seals/"
 if (platform.system() == "Linux"):
-    filePath = "/usr/share/seals/"
+    filePath = Path("/usr/share/seals")
 elif (platform.system() == "Darwin"):
-    filePath = "/usr/local/share/seals/"
-# detects which os for file path, because macOS doesn't like things being installed
-# to /usr/share/
+    filePath = Path("/usr/local/share/seals")
+else:
+    filePath = Path("seals") # fb
+
+# finds all .txt's in filePath (seals dir), stems them to first char and makes a list of callable flags
+# from the stems.
+#
+# New seals now wont require code changes, just a new .txt
+# 
+# should probably do something about overlapping file names (e.g: if two files start with the same letter)
+# could make them use more chars sequentially till it finds a unique flag
+def _build_seal_map():
+    if not filePath.is_dir():
+        return {}
+    
+    return {f"-{p.stem[0]}": p.name for p in sorted(filePath.glob("*.txt"))}
+
+SEALS = _build_seal_map()
 
 def main():
-    if len(sys.argv) > 1:
-        sealVar = sys.argv[1]
-        usrInput = " ".join(sys.argv[2:])
-        sealArt = selectSeal(sealVar)
-        if sealArt == 2:
-            print("Usage: sealsay [-modifier] [message]\nNOTE: Message MUST be preceded by a modifier\nMODIFIERS:\nSeal variants:\n-s, -o, -t\n\nOther modifiers:\n-h")
-        elif sealArt == 0:
-            print("Error: no sealfile attached to modifier")
-        elif sealArt:
-            printSeal(usrInput, sealArt)
-        else:
-            print("Error: Incorrect usage. See \"sealsay -h\" for help.")
+    if len(sys.argv) < 2:
+        print(help_msg(), file=sys.stderr)
+        sys.exit(1)
+        
+    sealVar = sys.argv[1]
+    usrInput = " ".join(sys.argv[2:])
+    
+    if sealVar == "-h":
+        print(help_msg())
+        return
+    
+    
+    sealArt = selectSeal(sealVar)
+    if sealArt is None:
+        print(f'Error: unknown opt "{sealVar}", use sealsay -h for usage.', file=sys.stderr)
+        
+    printSeal(usrInput, sealArt)
+      
+# ts kinda ugly      
+def help_msg():
+    flags = ", ".join(sorted(SEALS.keys()))
+    return f"""\
+USAGE: sealsay [-modifier] [message]
+NOTE: Message must be preceded by a modifier
 
-def printSeal(usrInput, sealArt):    
+MODIFIERS:
+Seal variants: {flags}
+Help:          -h"""
+
+def printSeal(usrInput, sealArt):
     usrInput = usrInput or ""
     
     lines = []
@@ -74,22 +106,16 @@ def printSeal(usrInput, sealArt):
 
 
 def selectSeal(sealVar):
-    x = 0
-    if (sealVar == "-s"):
-        with open(f"{filePath}basicseal.txt") as f:
-            x = f.read()
-            return x
-    elif (sealVar == "-o"):
-        with open(f"{filePath}oldseal.txt") as f:
-            x = f.read()
-            return x
-    elif (sealVar == "-t"):
-        with open(f"{filePath}triple.txt") as f:
-            x = f.read()
-            return x
-    elif (sealVar == "-h"):
-        return 2
-    else:
-        return 0
+    if sealVar not in SEALS:
+        return None
+    
+    path = filePath / SEALS[sealVar]
+    
+    try:
+        with open(path, encoding="utf-8") as f:
+            return f.read()
+    except FileNotFoundError:
+        print(f"Error: seal file not found: {path}", file=sys.stderr)
+        sys.exit(1)
 
 if __name__ == "__main__": main()
