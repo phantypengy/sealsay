@@ -15,7 +15,7 @@ elif (platform.system() == "Darwin"):
 def main():
     if len(sys.argv) > 1:
         sealVar = sys.argv[1]
-        usrInput = "".join(sys.argv[2:])
+        usrInput = " ".join(sys.argv[2:])
         sealArt = selectSeal(sealVar)
         if sealArt == 2:
             print("Usage: sealsay [-modifier] [message]\nNOTE: Message MUST be preceded by a modifier\nMODIFIERS:\nSeal variants:\n-s, -o, -t\n\nOther modifiers:\n-h")
