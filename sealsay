@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 
-import os
-import signal
-import sys
+from pathlib import Path
 import textwrap
 import platform
+import random
+import sys
+
 import argparse
-from pathlib import Path
 
 # the magic numbers in sys.exit were pmo AND os.EX_* stuff isnt cross-platform, so stupid
 EXIT_OK             = 0
@@ -49,9 +49,10 @@ def build_parser():
         epilog="e.g usage: sealsay -s 'Hello, world!'"
     )
     p.add_argument("message", nargs="*", help="text for the seal to say")
+    p.add_argument("-r", "--random", action="store_true", help="pick a random seal to display your message")
     
     seals = p.add_argument_group("seals")
-    seal_choice = seals.add_mutually_exclusive_group(required=bool(SEALS))
+    seal_choice = seals.add_mutually_exclusive_group(required=False)
     for flag in sorted(SEALS):
         name = Path(SEALS[flag]).stem
         seal_choice.add_argument(flag, f"--{name}", dest="seal", action="store_const", const=flag, help=f"{name} seal")
@@ -63,13 +64,16 @@ def build_parser():
 def main():
     args = build_parser().parse_args()
     
+    if args.random:
+        args.seal = random.choice(list(SEALS.keys()))
+    
     message = " ".join(args.message)
     if not message and not sys.stdin.isatty():
         message = read_stdin()
     
     sealArt = selectSeal(args.seal)
     if sealArt is None:
-        print(f'Error: unknown opt "{sealVar}", use sealsay -h for usage.', file=sys.stderr)
+        print(f'Error: unknown opt "{args.seal}", use sealsay -h for usage.', file=sys.stderr)
         sys.exit(EXIT_INVALID_SEAL)
         
     printSeal(message, sealArt)
@@ -81,6 +85,7 @@ def read_stdin():
         sys.exit(EXIT_INTERRUPTED)
     except (OSError, UnicodeDecodeError) as e:
         print(f"Error when reading from stdin: {e}", file=sys.stderr)
+        sys.exit(EXIT_IO_ERROR)
 
 def printSeal(usrInput, sealArt):
     usrInput = usrInput or ""
