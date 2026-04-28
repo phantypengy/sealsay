@@ -94,7 +94,6 @@ $ sealsay -s seals are the best!
 ### Seal variants:
 
 <!-- SEALS:START -->
-
 -b: basic seal
 
 -o: old seal
