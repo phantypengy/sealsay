@@ -1,0 +1,38 @@
+name: lint, type checks, format checks AND spellings checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v6
+
+      - name: set up py
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+
+      - name: install things
+        run: pip install ruff pyright codespell vulture
+
+      - name: ruff check
+        run: ruff check .
+
+      - name: ruff format
+        run: ruff format --check .
+
+      - name: codespell
+        run: codespell
+
+      - name: vulture
+        run: vulture
+
+      - name: pyright
+        run: pyright

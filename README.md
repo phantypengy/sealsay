@@ -55,26 +55,17 @@ git clone https://github.com/phantypengy/sealsay
 cd sealsay
 ```
 
-2: Make script executable & add it to PATH:
+2: Install with pip:
 
 ```bash
-chmod +x sealsay
-
-# Linux / macOS:
-sudo mv sealsay /usr/local/bin/sealsay
+python3 -m pip install .
 ```
 
-3: Move seals/ directory to /usr/share:
+3: Run it:
 
 ```bash
-# Linux
-mv seals/ /usr/share/seals/
-
-# macOS
-mv seals/ /usr/local/share/seals/
+sealsay -s "hello"
 ```
-
-After running the mv command, it is safe to delete the remains of the repo
 
 ## Usage
 
@@ -103,6 +94,7 @@ $ sealsay -s seals are the best!
 ### Seal variants:
 
 <!-- SEALS:START -->
+
 -b: basic seal
 
 -o: old seal

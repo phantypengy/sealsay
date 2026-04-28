@@ -1,0 +1,47 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sealsay"
+version = "2.0.0"
+description = "CLI app that generates ASCII art of a seal saying a message"
+readme = "README.md"
+requires-python = ">=3.12"
+
+[project.scripts]
+sealsay = "sealsay.cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+sealsay = ["seals/*.txt"]
+
+[tool.ruff]
+line-length    = 100
+target-version = "py312" # min
+extend-include = ["sealsay"]
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = [
+    "D",
+    "COM812",
+    "ISC001",
+    "INP001",
+]
+
+[tool.ruff.format]
+line-ending           = "lf"
+docstring-code-format = true
+
+[tool.codespell]
+skip = "*.txt,LICENSE,.git,.ruff_cache"
+
+[tool.vulture]
+paths          = ["src", "sealsay", "scripts"]
+min_confidence = 80

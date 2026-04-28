@@ -1,0 +1,10 @@
+{
+  "include": ["src", "sealsay", "scripts"],
+  "pythonVersion": "3.12",
+  "pythonPlatform": "All",
+  "typeCheckingMode": "strict",
+  "reportImplicitOverride": "error",
+  "reportUnnecessaryTypeIgnoreComment": "error",
+  "reportCallInDefaultInitializer": "error",
+  "reportAssertAlwaysTrue": "error"
+}

@@ -1,10 +1,10 @@
-from pathlib import Path
 import re
+from pathlib import Path
 
-SEALS   = Path("seals")
-README  = Path("README.md") 
+SEALS = Path("src/sealsay/seals")
+README = Path("README.md")
 
-descriptions = {}
+descriptions: dict[str, str] = {}
 descriptions_file = SEALS / "descriptions.txt"
 
 if descriptions_file.exists():
@@ -13,16 +13,16 @@ if descriptions_file.exists():
             k, v = line.split(":", 1)
             descriptions[k.strip()] = v.strip()
 
-lines = []
+lines: list[str] = []
 
 for p in sorted(SEALS.glob("*.txt")):
     if p.name == "descriptions.txt":
         continue
-    
+
     flag = f"-{p.stem[0]}"
     desc = descriptions.get(p.stem, p.stem)
     lines.append(f"{flag}: {desc} seal\n")
-    
+
 block = "\n".join(lines)
 content = README.read_text()
 new = re.sub(

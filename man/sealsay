@@ -49,10 +49,10 @@ disable text wrapping
 wrap column after a given amount of chars (default = 40)
 .TP
 \m[green]\fB-e\fP\m[], \m[cyan]\fB--eyes\fP\m[] \fIEE\fP
-gives your seal eyes!! comma seperated for seals with multiple eyes. e.g 'aa,bb,cc'
+gives your seal eyes!! comma separated for seals with multiple eyes. e.g 'aa,bb,cc'
 .TP
 \m[green]\fB-T\fP\m[], \m[cyan]\fB--tongues\fP\m[] \fITT\fP
-gives your seal a tongue!! comma seperated for seals with multiple tongues. e.g 'aa,bb,cc'
+gives your seal a tongue!! comma separated for seals with multiple tongues. e.g 'aa,bb,cc'
 
 .gcolor blue
 .SH APPEARANCE
