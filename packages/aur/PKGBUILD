@@ -10,7 +10,7 @@ depends=(python)
 makedepends=(python-build python-installer python-setuptools python-wheel)
 
 source=("$pkgname-$pkgver.tar.gz::https://github.com/phantypengy/sealsay/archive/v$pkgver.tar.gz")
-sha256sums=('e8e37fc2e3076d883d8cde1aebc63aa5fe9eec284138a153af0245fc6e526a66')
+sha256sums=('ae881c8f86c9727646dd766f91d5c141b50141505152b0c6917f598c65ba7e8f')
 
 build() {
     cd "$srcdir/sealsay-$pkgver"
