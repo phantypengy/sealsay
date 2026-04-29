@@ -1,0 +1,27 @@
+name: publish to AUR
+
+on:
+  push:
+    tags: ["v*"]
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: bump pkgver in PKGBUILD
+        run: sed -i "s/^pkgver=.*/pkgver=${GITHUB_REF_NAME#v}/; s/^pkgrel=.*/pkgrel=1/" packages/aur/PKGBUILD
+
+      - uses: KSXGitHub/github-actions-deploy-aur@v4.1.3
+        with:
+          pkgname: sealsay
+          pkgbuild: packages/aur/PKGBUILD
+          commit_username: ${{ secrets.AUR_USERNAME }}
+          commit_email: ${{ secrets.AUR_EMAIL }}
+          ssh_private_key: ${{ secrets.AUR_SSH_PRIVATE_KEY }}
+          commit_message: "chore: bump pkgver to ${{ github.ref_name }}, update sha256sums"
+          updpkgsums: true
+          test: true
+          test_flags: --clean --cleanbuild --syncdeps --noconfirm
+          ssh_keyscan_types: rsa,ecdsa,ed25519
