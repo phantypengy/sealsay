@@ -69,6 +69,8 @@ sealsay -s "hello"
 
 ## Usage
 
+`sealsay "hello"` and `echo hello | sealsay` use the basic seal by default.
+
 sealsay [-modifier] [message]
 
 ```bash

@@ -35,6 +35,9 @@ ignore = [
     "INP001",
 ]
 
+[tool.ruff.lint.per-file-ignores]
+"tests/*.py" = ["S101"]
+
 [tool.ruff.format]
 line-ending           = "lf"
 docstring-code-format = true

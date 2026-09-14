@@ -339,9 +339,19 @@ def _apply_substitution(art: str, marks: list[str], user_input: str | None) -> s
     if len(values) == 1:
         values = values * len(marks)
 
+    replacements: list[tuple[int, int, str]] = []
     for original, new in zip(marks, values, strict=False):
         literal, regions = _parse_braced(original)
-        art = art.replace(literal, _fill_regions(literal, regions, new), 1)
+        start = art.find(literal)
+        while start != -1:
+            end = start + len(literal)
+            if all(end <= left or start >= right for left, right, _ in replacements):
+                replacements.append((start, end, _fill_regions(literal, regions, new)))
+                break
+            start = art.find(literal, start + 1)
+
+    for start, end, replacement in sorted(replacements, reverse=True):
+        art = art[:start] + replacement + art[end:]
     return art
 
 
@@ -402,6 +412,9 @@ def print_seal(message: str, seal_art: str, style: RenderStyle) -> None:
 
 
 def select_seal(seal_var: str | None, eyes: str | None, tongues: str | None) -> str | None:
+    if seal_var is None:
+        seal_var = next((flag for flag, name in SEALS.items() if name == "basic.txt"), None)
+
     if seal_var not in SEALS:
         return None
 
