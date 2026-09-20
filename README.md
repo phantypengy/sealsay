@@ -100,11 +100,13 @@ $ sealsay -s seals are the best!
 
 -o: old seal
 
--t: triple seal
+-t: teto seal
+
+-tr: triple seal
 
 <!-- SEALS:END -->
 
-_-t and -o were taken from ASCII.co.uk_
+_-tr and -o were taken from ASCII.co.uk_
 
 ### Other commands:
 
