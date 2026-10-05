@@ -100,9 +100,9 @@ $ sealsay -s seals are the best!
 
 -o: old seal
 
--t: kasane teto seal
+-k: kasane teto seal
 
--tr: triple seal
+-t: triple seal
 
 <!-- SEALS:END -->
 
