@@ -106,7 +106,7 @@ $ sealsay -s seals are the best!
 
 <!-- SEALS:END -->
 
-_-tr and -o were taken from ASCII.co.uk_
+_-t and -o were taken from ASCII.co.uk_
 
 ### Other commands:
 
